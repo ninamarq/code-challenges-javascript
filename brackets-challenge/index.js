@@ -1,25 +1,17 @@
-const checkParenthesis = (s) => {
-  const isOpen = [...s].some(element => element === '(')
-  const isClosed = [...s].some(element => element === ')')
-  if (isOpen && isClosed) return true
-  if (!isOpen && !isClosed) return true
-  return false
+const objBrackets = {
+  parenthesis: ['(', ')'],
+  squares: ['[', ']'],
+  keys: ['{', '}'],
 }
 
-const checkSquareBrackets = (s) => {
-  const isOpen = [...s].some(element => element === '[')
-  const isClosed = [...s].some(element => element === ']')
-  if (!isOpen && !isClosed) return true
-  if (isOpen && isClosed) return true
-  return false
-}
-
-const checkKeysBrackets = (s) => {
-  const isOpen = [...s].some(element => element === '{')
-  const isClosed = [...s].some(element => element === '}')
-  if (!isOpen && !isClosed) return true
-  if (isOpen && isClosed) return true
-  return false
+const checkBrackets = (s) =>  {
+  const arrCheck = []
+  Object.keys(objBrackets).forEach((bracket) => {
+    const isOpen = [...s].some(element => element === objBrackets[bracket][0])
+    const isClosed = [...s].some(element => element === objBrackets[bracket][1])
+    if ((!isOpen && !isClosed) || (isOpen && isClosed)) arrCheck.push(bracket)
+  })
+  return arrCheck.length === 3 ? true : false
 }
 
 const getInsideBracket = (open, close, string) => {
@@ -34,15 +26,7 @@ const getInsideBracket = (open, close, string) => {
 }
 
 const isValid = (s) => {
-  const objBrackets = {
-    parenthesis: ['(', ')'],
-    squares: ['[', ']'],
-    keys: ['{', '}'],
-  }
   const analysis = []
-  const checkBrackets = string => checkKeysBrackets(string)
-    && checkParenthesis(string)
-    && checkSquareBrackets(string)
 
   Object.values(objBrackets).forEach((arr) => {
     const inside = getInsideBracket(arr[0], arr[1], s)

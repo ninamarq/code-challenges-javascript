@@ -17,11 +17,15 @@ const checkBrackets = (s) =>  {
 const getInsideBracket = (open, close, string) => {
   const openB = [...string].flatMap((element, index) => element === open ? index : [])
   const closeB = [...string].flatMap((element, index) => element === close ? index : []).reverse()
+  const invalidMatrix = openB.some((element, index) => element > closeB[index])
+
+  if (invalidMatrix) return [string[0]]
   if (!openB.length || !closeB.length) return
   if (openB.length !== closeB.length) return [string[0]]
   if ((openB.length === closeB.length) && (openB.length > 1 && closeB.length > 1)) {
     return openB.map((element, index) => string.slice(element + 1, closeB[index]))
   }
+
   return [string.slice(openB + 1, closeB)]
 }
 
@@ -41,16 +45,20 @@ const isValid = (s) => {
 }
 
 const testsArray = [
-  '()',//valid
-  '[]',//valid
-  '{}',//valid
-  '([',//invalid
-  '(]',//invalid
-  '{()}[]', //valid
-  '{(})[]', //invalid
-  '({[()]})', //valid
-  '({[(])})', //invalid
-  '][]()', //invalid
+  '()',// valid
+  '[]',// valid
+  '{}',// valid
+  '([',// invalid
+  '(]',// invalid
+  '{()}[]', // valid
+  '{(})[]', // invalid
+  '({[()]})', // valid
+  '({[(])})', // invalid
+  '][]()', // invalid
+  '{()}[]', // valid
+  '{(})[]', // invalid
+  '{()[]}', // valid
+  '{})([]', // invalid
 ]
 
 testsArray.forEach((str) => {
